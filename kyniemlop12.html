@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kỷ Niệm Lớp 12A2 - Album Ảnh</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Modal đăng nhập */
+        .login-modal {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .class-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .error-message {
+            color: #f5576c;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9em;
+            min-height: 20px;
+        }
+
+        .hint {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .hint span {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        /* Nội dung chính (ẩn ban đầu) */
+        .main-content {
+            display: none;
+            max-width: 1200px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+
+        .class-info {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .upload-section {
+            background: white;
+            border: 2px dashed #764ba2;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .upload-section:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #fileInput {
+            margin: 20px 0;
+        }
+
+        .preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .memory-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .memory-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .memory-info {
+            padding: 15px;
+        }
+
+        .memory-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .memory-date {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .memory-message {
+            color: #555;
+            font-style: italic;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+        }
+
+        .statistics {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .memory-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .memory-inputs input,
+        .memory-inputs textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .memory-inputs textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Style cho thanh nhạc */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            transition: all 0.3s ease;
+        }
+
+        .music-player:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .music-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .music-title {
+            color: #333;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .music-artist {
+            color: #666;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .login-modal {
+                padding: 20px;
+            }
+
+            .music-player {
+                bottom: 10px;
+                right: 10px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Modal đăng nhập -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-header">
+            <h2>📸 Kỷ Niệm Lớp 12</h2>
+            <p>Nhập mật khẩu để vào trang kỷ niệm</p>
+        </div>
+
+        <div class="class-badge">
+            🎓 Lớp 12A2 - Niên khóa 2025-2026 🎓
+        </div>
+
+        <div class="input-group">
+            <label>🔑 Mật khẩu</label>
+            <input type="password" id="passwordInput" placeholder="Nhập mật khẩu..." onkeypress="handleKeyPress(event)">
+        </div>
+
+        <button class="login-btn" onclick="checkPassword()">
+            🚪 Đăng nhập
+        </button>
+
+        <div class="error-message" id="errorMessage"></div>
+    </div>
+
+    <!-- Nội dung chính -->
+    <div class="main-content" id="mainContent">
+        <header>
+            <h1>📸 Kỷ Niệm Lớp 12A2 </h1>
+            <div class="subtitle">Những khoảnh khắc đẹp nhất thời áo trắng</div>
+            <button class="logout-btn" onclick="logout()">🚪 Đăng xuất</button>
+        </header>
+
+        <div class="class-info">
+            🎓 Lớp 12A2 - Niên khóa 2025-2026 | 32 thành viên 🎓
+        </div>
+
+        <div class="statistics">
+            <div class="stat-item">
+                <div class="stat-number" id="photoCount">0</div>
+                <div class="stat-label">Tổng số ảnh</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="memberCount">32</div>
+                <div class="stat-label">Học sinh</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="lastUpdated">-</div>
+                <div class="stat-label">Cập nhật gần nhất</div>
+            </div>
+        </div>
+
+        <div class="upload-section">
+            <h2 style="margin-bottom: 20px; color: #333;">📤 Thêm kỷ niệm mới</h2>
+            <div class="memory-inputs">
+                <input type="text" id="photoTitle" placeholder="Tiêu đề ảnh (VD: Buổi dã ngoại cuối năm)"
+                    value="Kỷ niệm đáng nhớ">
+                <textarea id="photoMessage"
+                    placeholder="Lời nhắn gửi... (VD: Nhớ mãi khoảnh khắc này!)">Mãi nhớ về tuổi học trò!</textarea>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" multiple class="hidden">
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                📷 Chọn ảnh để tải lên
+            </button>
+            <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                Hỗ trợ: JPG, PNG, GIF (tối đa 5MB/ảnh)
+            </p>
+        </div>
+
+        <div id="gallery" class="preview-container">
+            <!-- Ảnh sẽ được hiển thị ở đây -->
+        </div>
+
+        <footer>
+            <p>© 2024 - Kỷ niệm lớp 12A2 | Lưu giữ những khoảnh khắc không thể nào quên ❤️</p>
+            <p style="margin-top: 10px;">⭐ Hãy cùng nhau xây dựng album kỷ niệm của chúng mình nhé! ⭐</p>
+        </footer>
+    </div>
+
+    <!-- Thanh nhạc -->
+    <div class="music-player">
+        <audio id="bgMusic" loop>
+            <source src="C:\Users\Tran Truong Giang\Desktop\12a2\music.mp3" type="audio/mpeg">
+            Trình duyệt của bạn không hỗ trợ audio.
+        </audio>
+        <button class="music-btn" id="musicBtn" onclick="toggleMusic()">▶️</button>
+        <div class="music-info">
+            <span class="music-title">🎵 Thanh xuân của chúng ta</span>
+            <span class="music-artist">Lớp 12A2</span>
+        </div>
+    </div>
+
+    <script>
+        // CẤU HÌNH MẬT KHẨU
+        const CORRECT_PASSWORD = "12a2"; // Bạn có thể đổi mật khẩu ở đây
+
+        // Kiểm tra đăng nhập
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (password === CORRECT_PASSWORD) {
+                // Đăng nhập thành công
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+
+                // Lưu trạng thái đăng nhập (cho phiên làm việc hiện tại)
+                sessionStorage.setItem('isLoggedIn', 'true');
+
+                // Khởi tạo dữ liệu nếu chưa có
+                initializeData();
+            } else {
+                // Sai mật khẩu
+                errorMessage.textContent = '❌ Sai mật khẩu! Vui lòng thử lại.';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').style.borderColor = '#f5576c';
+
+                // Hiệu ứng lắc
+                document.querySelector('.login-modal').style.animation = 'shake 0.5s ease';
+                setTimeout(() => {
+                    document.querySelector('.login-modal').style.animation = 'slideIn 0.5s ease';
+                }, 500);
+            }
+        }
+
+        // Xử lý phím Enter
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                checkPassword();
+            }
+        }
+
+        // Đăng xuất
+        function logout() {
+            sessionStorage.removeItem('isLoggedIn');
+            document.getElementById('loginModal').style.display = 'block';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('errorMessage').textContent = '';
+
+            // Dừng nhạc khi đăng xuất
+            if (isPlaying) {
+                toggleMusic();
+            }
+        }
+
+        // Kiểm tra trạng thái đăng nhập khi tải trang
+        window.onload = function () {
+            if (sessionStorage.getItem('isLoggedIn') === 'true') {
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                initializeData();
+            }
+        };
+
+        // Khởi tạo dữ liệu
+        function initializeData() {
+            // Load memories từ localStorage
+            if (!localStorage.getItem('classMemories')) {
+                // Tạo dữ liệu mẫu
+                const sampleMemories = [
+                    {
+                        id: 1,
+                        title: "Ngày khai giảng cuối cùng",
+                        message: "Nhớ mãi ngày khai giảng cuối cùng thời học sinh!",
+                        date: "2023-09-05",
+                        image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23667eea'/%3E%3Ctext x='50' y='115' fill='white' font-family='Arial' font-size='16'%3EẢnh khai giảng%3C/text%3E%3C/svg%3E"
+                    },
+                    {
+                        id: 2,
+                        title: "Buổi dã ngoại cuối năm",
+                        message: "Chuyến đi chơi đáng nhớ nhất!",
+                        date: "2024-03-15",
+                        image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23764ba2'/%3E%3Ctext x='50' y='115' fill='white' font-family='Arial' font-size='16'%3EẢnh dã ngoại%3C/text%3E%3C/svg%3E"
+                    },
+                    {
+                        id: 3,
+                        title: "Lễ tri ân và trưởng thành",
+                        message: "Cảm ơn thầy cô và bạn bè!",
+                        date: "2024-05-20",
+                        image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23f093fb'/%3E%3Ctext x='50' y='115' fill='white' font-family='Arial' font-size='16'%3EẢnh tri ân%3C/text%3E%3C/svg%3E"
+                    }
+                ];
+                localStorage.setItem('classMemories', JSON.stringify(sampleMemories));
+            }
+
+            memories = JSON.parse(localStorage.getItem('classMemories'));
+            displayMemories();
+        }
+
+        // Khai báo biến memories
+        let memories = [];
+
+        // Cập nhật thống kê
+        function updateStatistics() {
+            document.getElementById('photoCount').textContent = memories.length;
+
+            if (memories.length > 0) {
+                const lastDate = memories[memories.length - 1].date;
+                document.getElementById('lastUpdated').textContent = lastDate;
+            }
+        }
+
+        // Hiển thị tất cả ảnh
+        function displayMemories() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+
+            memories.forEach(memory => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.innerHTML = `
+                    <img src="${memory.image}" alt="${memory.title}">
+                    <div class="memory-info">
+                        <div class="memory-title">📌 ${memory.title}</div>
+                        <div class="memory-date">📅 ${memory.date}</div>
+                        <div class="memory-message">💬 "${memory.message}"</div>
+                        <button class="delete-btn" onclick="deleteMemory(${memory.id})">🗑️ Xóa ảnh</button>
+                    </div>
+                `;
+                gallery.appendChild(card);
+            });
+
+            updateStatistics();
+        }
+
+        // Xóa ảnh
+        function deleteMemory(id) {
+            if (confirm('Bạn có chắc muốn xóa ảnh kỷ niệm này không?')) {
+                memories = memories.filter(memory => memory.id !== id);
+                localStorage.setItem('classMemories', JSON.stringify(memories));
+                displayMemories();
+            }
+        }
+
+        // Xử lý tải ảnh lên
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const files = event.target.files;
+            const title = document.getElementById('photoTitle').value || 'Kỷ niệm đáng nhớ';
+            const message = document.getElementById('photoMessage').value || 'Mãi nhớ về tuổi học trò!';
+
+            for (let file of files) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert(`Ảnh "${file.name}" quá lớn! Vui lòng chọn ảnh dưới 5MB.`);
+                    continue;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const newMemory = {
+                        id: Date.now() + Math.random(),
+                        title: title,
+                        message: message,
+                        date: new Date().toISOString().split('T')[0],
+                        image: e.target.result
+                    };
+
+                    memories.push(newMemory);
+                    localStorage.setItem('classMemories', JSON.stringify(memories));
+                    displayMemories();
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // Reset input
+            event.target.value = '';
+        });
+
+        // Thêm hiệu ứng lắc cho sai mật khẩu
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ===== PHẦN XỬ LÝ NHẠC =====
+        let isPlaying = false;
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicBtn.textContent = '▶️';
+            } else {
+                music.play();
+                musicBtn.textContent = '⏸️';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Tự động dừng nhạc khi rời trang
+        window.addEventListener('beforeunload', function () {
+            if (isPlaying) {
+                music.pause();
+            }
+        });
+    </script>
+</body>
+
+</html>
